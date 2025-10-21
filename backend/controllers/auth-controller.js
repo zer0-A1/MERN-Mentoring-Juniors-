@@ -8,9 +8,11 @@ const home = async (req, res) => {
 
 const register = async (req, res) => {
     try {
-        res.send("Register")
+        const {email, password} = req.body;
+        console.log(req.body);
+        res.json({message : "How to get user certificates?", data : req.body});
     } catch (error) {
-        res.status(500).json({ message: error.message })
+        console.log("Error message", error);
     }
 }
 

@@ -1,23 +1,24 @@
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 dotenv.config();
+
+
 const URI = process.env.MONGODB_URI;
 
-const connectDB = async ()=> {
-
+const connectDB = async () => {
     if (!URI) {
-        console.log("MongoDB connection error : URI is not defined");
-        process.exit(1);
+        console.log("MongoDB URI not provided; starting server without database connection");
+        return; // non-fatal
     }
 
     try {
         const conn = await mongoose.connect(URI, {
-            dbName: "First Mern Project",
+            dbName: "db",
         });
-        console.log(`MongoDB is connectd : ${conn.connection.host}`)
+        console.log(`MongoDB is connected : ${conn.connection.host}`)
     } catch (error) {
         console.log("MongoDB connection error : ", error.message);
-        process.exit(1);
+        // don't exit; allow server to run for non-DB routes
     }
 }
 

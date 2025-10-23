@@ -8,7 +8,7 @@ const home = async (req, res) => {
 
 const register = async (req, res) => {
     try {
-        const {name, email, password} = req.body;
+        const {email, password} = req.body;
         console.log(req.body);
         res.json({message : "How to get user certificates?", data : req.body});
     } catch (error) {

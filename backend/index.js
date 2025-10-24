@@ -1,18 +1,23 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const connectDB = require("./utils/db");
-const router = require("./routers/auth-router");
+const authRouter = require("./routers/auth-router");
+const contactRouter = require("./routers/contact-router");
+const errorMiddleware = require("./middlewares/error-middleware");
 const app = express();
 
 dotenv.config();
 
 //Middleware
 app.use(express.json());
-app.use("/api/auth", router);
+app.use("/api/auth", authRouter);
+app.use("/api/contact", contactRouter);
 
 app.get("/", (req, res) => {
     res.send("Hellow World!111111")
 })
+
+app.use(errorMiddleware);
 
 connectDB()
 .then(() => {

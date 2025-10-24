@@ -23,7 +23,8 @@ const register = async (req, res) => {
         }
 
         const newUser = await User.create({ name, email, password: hashedPassword });
-        res.status(201).json({ message: "User created successfully", data: newUser });
+        const token = await newUser.generateToken();
+        res.status(201).json({ message: "User created successfully", CreatedUser: newUser, token: token, userId: newUser._id });
     } catch (error) {
         console.log("Error message", error);
         res.status(500).json({ message: "Internal server error : " + error.message });
@@ -40,9 +41,11 @@ const login = async (req, res) => {
         if (!user || user.password !== password) {
             return res.status(401).json({ message: "Invalid credentials" });
         }
-        res.status(200).json({ message: "Login successful", data: { id: user._id, name: user.name, email: user.email } });
+        const token = await user.generateToken();
+        res.status(200).json({ message: "Login successful", user: user, token: token, userId: user._id });
     } catch (error) {
-        res.status(500).json({ message: "Internal server error : " + error.message });
+        console.log("Error message", error);
+        next(error);
     }
 }
 
